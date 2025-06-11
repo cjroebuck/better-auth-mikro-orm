@@ -1,5 +1,4 @@
 {
-  "private": false,
   "type": "module",
   "name": "better-auth-mikro-orm",
   "version": "0.3.0",
@@ -17,9 +16,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/octet-stream/better-auth-mikro-orm.git"
+    "url": "git+ssh://git@github.com/cjroebuck/better-auth-mikro-orm.git"
   },
-  "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677",
+  "packageManager": "yarn@4.9.1",
   "engines": {
     "node": ">= 18"
   },
@@ -43,16 +42,14 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "scripts": {
     "build": "del-cli lib && tsup-node",
     "test": "vitest run",
     "test.watch": "vitest",
     "test.ui": "vitest --ui",
     "coverage": "vitest run --coverage",
-    "release": "pnpm build && changeset publish",
+    "release": "yarn build && changeset publish",
     "prepare": "npx --yes is-in-ci || husky"
   },
   "devDependencies": {
