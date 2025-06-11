@@ -74,7 +74,11 @@ export interface AdapterUtils {
   ): Record<string, any>
 }
 
-const ownReferences = [ReferenceKind.SCALAR, ReferenceKind.ONE_TO_MANY]
+const ownReferences = [
+  ReferenceKind.SCALAR,
+  ReferenceKind.ONE_TO_MANY,
+  ReferenceKind.EMBEDDED
+]
 
 /**
  * Creates bunch of utilities for adapter
@@ -184,7 +188,10 @@ export function createAdapterUtils(orm: MikroORM): AdapterUtils {
       )
     }
 
-    if (prop.kind === ReferenceKind.SCALAR) {
+    if (
+      prop.kind === ReferenceKind.SCALAR ||
+      prop.kind === ReferenceKind.EMBEDDED
+    ) {
       return [prop.name]
     }
 
@@ -199,7 +206,7 @@ export function createAdapterUtils(orm: MikroORM): AdapterUtils {
     }
 
     createAdapterError(
-      `Cannot normalize "${fieldName}" field name into path for "${metadata.className} entity."`
+      `Cannot normalize "${fieldName}" field name into path for "${metadata.className}" entity.`
     )
   }
 

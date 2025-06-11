@@ -1,5 +1,7 @@
 import {
   Collection,
+  Embeddable,
+  Embedded,
   Entity,
   OneToMany,
   type Opt,
@@ -25,4 +27,16 @@ export class User extends Base implements DatabaseUser {
 
   @OneToMany(() => Session, "user")
   sessions = new Collection<Session, this>(this)
+
+  @Embedded(() => Address, {object: true})
+  address!: Address
+}
+
+@Embeddable()
+class Address {
+  @Property({type: "string"})
+  street!: string
+
+  @Property({type: "string"})
+  city!: string
 }
