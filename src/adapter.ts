@@ -54,7 +54,8 @@ export const mikroOrmAdapter = (
         getFieldPath,
         normalizeInput,
         normalizeOutput,
-        normalizeWhereClauses
+        normalizeWhereClauses,
+        ensureReferencesAreLoaded
       } = createAdapterUtils(orm)
 
       return {
@@ -69,6 +70,8 @@ export const mikroOrmAdapter = (
           ) {
             Reflect.deleteProperty(input, "id")
           }
+
+          ensureReferencesAreLoaded(metadata, input)
 
           const entity = orm.em.create(metadata.class, input)
 

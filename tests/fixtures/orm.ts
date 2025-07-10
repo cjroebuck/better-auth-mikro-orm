@@ -28,9 +28,10 @@ export function createOrm({entities}: CreateOrmParams): MikroORM {
     allowGlobalContext: true
   })
 
-  beforeAll(async () => await orm.connect())
-
-  beforeEach(async () => await orm.getSchemaGenerator().refreshDatabase())
+  beforeAll(async () => {
+    await orm.connect()
+    await orm.getSchemaGenerator().refreshDatabase()
+  })
 
   afterAll(async () => {
     await orm.close()

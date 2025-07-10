@@ -72,6 +72,17 @@ export interface AdapterUtils {
     metadata: EntityMetadata,
     where?: Where[]
   ): Record<string, any>
+
+  /**
+   * Ensures that all references are loaded.
+   *
+   * @param metadata - Entity metadata
+   * @param input - The input data possibly containing the id of a relation
+   */
+  ensureReferencesAreLoaded(
+    metadata: EntityMetadata,
+    input: Record<string, any>
+  ): void
 }
 
 const ownReferences = [
@@ -233,10 +244,30 @@ export function createAdapterUtils(orm: MikroORM): AdapterUtils {
         ),
         value
       }))
-      .filter(({path}) => (select ? select.includes(path) : true))
       .forEach(({path, value}) => dset(result, path, value))
 
     return result
+  }
+
+  function ensureReferencesAreLoaded(
+    metadata: EntityMetadata,
+    input: Record<string, any>
+  ): void {
+    // filter relations that are in the input
+    const relations = metadata.relations
+      .filter(r => r.name in input && r.targetMeta?.class)
+      .map(r => ({
+        name: r.name,
+        model: r.targetMeta ? r.targetMeta.class : undefined
+      }))
+
+    // load a reference for each relation that is in the input
+    relations.forEach(relation => {
+      if (!relation.model) {
+        return
+      }
+      orm.em.getReference(relation.model, input[relation.name])
+    })
   }
 
   /**
@@ -351,6 +382,7 @@ export function createAdapterUtils(orm: MikroORM): AdapterUtils {
     getFieldPath,
     normalizeInput,
     normalizeOutput,
-    normalizeWhereClauses
+    normalizeWhereClauses,
+    ensureReferencesAreLoaded
   }
 }

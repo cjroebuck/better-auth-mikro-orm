@@ -43,9 +43,7 @@
     },
     "./package.json": "./package.json"
   },
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "scripts": {
     "build": "del-cli lib && tsup-node",
     "test": "vitest run",
@@ -77,7 +75,8 @@
     "tsup": "8.4.0",
     "typescript": "5.8.3",
     "uuid": "11.1.0",
-    "vitest": "3.1.1"
+    "vitest": "3.1.1",
+    "deepmerge": "4.3.1"
   },
   "dependencies": {
     "dset": "3.1.4"
